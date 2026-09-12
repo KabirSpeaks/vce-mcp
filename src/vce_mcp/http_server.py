@@ -1,6 +1,6 @@
 import os
 from starlette.applications import Starlette
-from starlette.responses import JSONResponse
+from starlette.responses import JSONResponse, FileResponse
 from starlette.routing import Route, Mount
 from mcp.server.transport_security import TransportSecuritySettings
 
@@ -12,6 +12,10 @@ def health_check(request):
         "service": "vce-mcp",
         "version": "1.1.0"
     })
+
+def favicon(request):
+    favicon_path = os.path.join(os.path.dirname(__file__), "static", "favicon.ico")
+    return FileResponse(favicon_path)
 
 def create_app() -> Starlette:
     # 1. Parse allowed hosts from environment for Transport Security
@@ -31,8 +35,9 @@ def create_app() -> Starlette:
         transport_security=security_settings
     )
 
-    # 3. Add /health route directly to the mcp_app to preserve its native lifespan
+    # 3. Add /health and /favicon.ico routes directly to the mcp_app to preserve its native lifespan
     mcp_app.router.routes.append(Route("/health", endpoint=health_check, methods=["GET"]))
+    mcp_app.router.routes.append(Route("/favicon.ico", endpoint=favicon, methods=["GET"]))
     
     return mcp_app
 
