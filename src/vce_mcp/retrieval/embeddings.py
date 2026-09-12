@@ -1,4 +1,4 @@
-from sentence_transformers import SentenceTransformer
+import logging
 import logging
 import os
 
@@ -11,9 +11,11 @@ class EmbeddingService:
         
         if provider == "local":
             logger.info(f"Loading local embedding model: {model_name}")
+            from sentence_transformers import SentenceTransformer
             self.model = SentenceTransformer(model_name)
         else:
             logger.warning(f"Unsupported provider {provider}, falling back to local {model_name}")
+            from sentence_transformers import SentenceTransformer
             self.model = SentenceTransformer(model_name)
             
     def generate_embedding(self, text: str) -> list[float]:

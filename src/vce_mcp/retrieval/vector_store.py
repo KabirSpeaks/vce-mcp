@@ -1,4 +1,4 @@
-import chromadb
+import os
 import os
 import logging
 from typing import List, Dict, Any
@@ -13,6 +13,7 @@ class VectorStore:
         # Ensure path exists
         os.makedirs(persist_directory, exist_ok=True)
         
+        import chromadb
         self.client = chromadb.PersistentClient(path=persist_directory)
         self.collection_name = "vce_chunks"
         
