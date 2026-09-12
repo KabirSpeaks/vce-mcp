@@ -15,6 +15,7 @@ RUN pip install uv
 # Copy project files
 COPY pyproject.toml README.md ./
 COPY src/ ./src/
+COPY data/ ./data/
 
 # Install the package and its dependencies
 RUN uv pip install --system -e .
