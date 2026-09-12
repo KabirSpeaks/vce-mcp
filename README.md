@@ -27,22 +27,53 @@ flowchart TD
 
 You need Python 3.12+ installed.
 
-1. **Clone the repository:**
+1. **Clone the repo**
 ```bash
-git clone https://github.com/yourusername/vce-mcp.git
+git clone https://github.com/KabirSpeaks/vce-mcp.git
 cd vce-mcp
+uv pip install -e .
 ```
 
-2. **Create a virtual environment and install:**
+## Remote MCP Deployment (Cloud)
+
+The server supports remote deployment via the official MCP Streamable HTTP transport, which can be connected to ChatGPT and other clients.
+
+### Docker
 ```bash
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-pip install -e .
+docker build -t vce-mcp .
+docker run -p 8000:8000 -e PORT=8000 vce-mcp
 ```
 
-3. **Configure Environment Variables:**
+### Endpoints
+- **MCP Endpoint**: `https://YOUR-DOMAIN/mcp`
+- **Health Endpoint**: `https://YOUR-DOMAIN/health`
+
+### Architecture
+```text
+AI Client (ChatGPT)
+   |
+   | MCP Streamable HTTP
+   v
+https://DOMAIN/mcp
+   |
+   v
+VCE MCP Server
+   |
+   +---- SQLite & ChromaDB
+```
+
+> **Important**: ChatGPT connects to the remotely deployed MCP endpoint (e.g., `https://YOUR-DOMAIN/mcp`). The GitHub repository itself is the source code and cannot be directly linked to ChatGPT.
+
+Please refer to:
+- [Remote Deployment Guide](docs/REMOTE_DEPLOYMENT.md)
+- [ChatGPT Connection Guide](docs/CHATGPT_CONNECTION.md)
+- [Marketplace Deployment Guide](docs/MARKETPLACE_DEPLOYMENT.md)
+
+## Usage (Local Stdio)
+
+Run the local stdio MCP server:
 ```bash
-cp .env.example .env
+vce-mcp server
 ```
 Edit `.env` if necessary (e.g., to change crawl depth).
 
