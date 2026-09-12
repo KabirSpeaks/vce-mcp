@@ -26,5 +26,8 @@ EXPOSE 8000
 RUN useradd -m appuser && chown -R appuser /app
 USER appuser
 
+# Allow all hosts for Streamable HTTP since Hugging Face acts as a reverse proxy
+ENV VCE_MCP_ALLOWED_HOSTS="*"
+
 # Run the HTTP server, picking up PORT from the environment
 CMD ["vce-mcp", "serve-http", "--host", "0.0.0.0"]
