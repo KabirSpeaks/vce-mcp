@@ -24,6 +24,9 @@ RUN uv pip install --system -e .
 RUN useradd -m appuser && chown -R appuser /app
 USER appuser
 
+# Pre-download the SentenceTransformer model as the app user so it's cached properly
+RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2')"
+
 # Allow all hosts for Streamable HTTP since Render acts as a reverse proxy
 ENV VCE_MCP_ALLOWED_HOSTS="*"
 
