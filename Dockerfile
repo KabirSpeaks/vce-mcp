@@ -19,15 +19,12 @@ COPY src/ ./src/
 # Install the package and its dependencies
 RUN uv pip install --system -e .
 
-# Expose port (default to 8000, but can be overridden)
-EXPOSE 8000
-
 # Create a non-root user and change ownership
 RUN useradd -m appuser && chown -R appuser /app
 USER appuser
 
-# Allow all hosts for Streamable HTTP since Hugging Face acts as a reverse proxy
+# Allow all hosts for Streamable HTTP since Render acts as a reverse proxy
 ENV VCE_MCP_ALLOWED_HOSTS="*"
 
-# Run the HTTP server, picking up PORT from the environment
-CMD ["vce-mcp", "serve-http", "--host", "0.0.0.0"]
+# Run the HTTP server, ensuring it binds to Render's dynamic $PORT (default 10000)
+CMD ["sh", "-c", "vce-mcp serve-http --host 0.0.0.0 --port ${PORT:-10000}"]
