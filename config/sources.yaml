@@ -1,0 +1,12 @@
+sources:
+  - name: "VCE Main Website"
+    url: "https://vardhaman.org/"
+    type: "institutional"
+    allowed_domains:
+      - "vardhaman.org"
+    excluded_paths:
+      - "/wp-admin"
+      - "/login"
+      - "/student-portal"
+      - "/erp"
+      - "/webmail"
